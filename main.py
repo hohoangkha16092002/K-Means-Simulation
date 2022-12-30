@@ -8,6 +8,7 @@ red = (255, 0, 0)
 blue = (0, 0, 255)
 royal_blue = (65,105,225)
 crimson = (220,20,60)
+gray = (112,128,144)
 
 red_transparent = (255, 0, 0, 0.5)
 blue_transparent = (0, 0, 255, 0.5)
@@ -89,7 +90,8 @@ exit = False
 arr = []
 #----------------------------------
 font = pygame.font.Font('freesansbold.ttf', 20)
-text1 = ''
+cen1 = ''
+cen2 = ''
 #---------------------------------
 
 global count, bluearr, redarr
@@ -107,17 +109,22 @@ while not exit:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 t1, t2, x1, y1, x2, y2 = selectCentroid(arr, bluearr, redarr)
-                text1 = str(x1) +' '+ str(y1) +' '+ str(x2) +' '+ str(y2)
+                cen1 = str(x1) +' '+ str(y1)
+                cen2 = str(x2) +' '+ str(y2)
                 count += 1
     display.fill(white)
     drawcircles(arr)
     drawRedBlueCircles(redarr, bluearr)
-    text = font.render(text1, True, white, black)
-    textRect = text.get_rect()
-    textRect.center = (680, 25)
+    text1 = font.render(cen1, True, blue, gray)
+    text2 = font.render(cen2, True, red, gray)
+    textRect1 = text1.get_rect()
+    textRect2 = text2.get_rect()
+    textRect1.center = (680, 25)
+    textRect2.center = (680, 50)
     if count > 0:
         drawCentroid(t1, t2)
-        display.blit(text, textRect)
+        display.blit(text1, textRect1)
+        display.blit(text2, textRect2)
         redarr = []
         bluearr = []
         assignPoints(t1, t2, arr)
