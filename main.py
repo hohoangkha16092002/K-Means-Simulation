@@ -13,6 +13,7 @@ red_transparent = (255, 0, 0, 0.5)
 blue_transparent = (0, 0, 255, 0.5)
 
 
+
 def drawcircles(arr):
     for (x, y) in arr:
         pygame.draw.circle(display, black, (x, y), 4)
@@ -56,7 +57,7 @@ def selectCentroid(arr, bluearr, redarr):
     x2, y2 = t2
     t1 = (int(x1), int(y1))
     t2 = (int(x2), int(y2))
-    return t1, t2
+    return t1, t2, int(x1), int(y1), int(x2), int(y2)
 
 
 def assignPoints(t1, t2, arr):
@@ -77,15 +78,19 @@ def calculateShortestDistance(x, y, t1, t2):
         return 1
     return 0
 
-
+#Clustering Simulation
 pygame.init()
 clock = pygame.time.Clock()
 width = 800
 height = 600
 display = pygame.display.set_mode((width, height))
-pygame.display.set_caption("K Means Clustering Simulation")
+pygame.display.set_caption("K Means")
 exit = False
 arr = []
+#----------------------------------
+font = pygame.font.Font('freesansbold.ttf', 20)
+text1 = ''
+#---------------------------------
 
 global count, bluearr, redarr
 count = 0
@@ -101,13 +106,18 @@ while not exit:
             arr.append((x, y))
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                t1, t2 = selectCentroid(arr, bluearr, redarr)
+                t1, t2, x1, y1, x2, y2 = selectCentroid(arr, bluearr, redarr)
+                text1 = str(x1) +' '+ str(y1) +' '+ str(x2) +' '+ str(y2)
                 count += 1
     display.fill(white)
     drawcircles(arr)
     drawRedBlueCircles(redarr, bluearr)
+    text = font.render(text1, True, white, black)
+    textRect = text.get_rect()
+    textRect.center = (680, 25)
     if count > 0:
         drawCentroid(t1, t2)
+        display.blit(text, textRect)
         redarr = []
         bluearr = []
         assignPoints(t1, t2, arr)
